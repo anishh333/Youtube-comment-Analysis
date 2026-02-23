@@ -1,4 +1,4 @@
-# 🎓 YouTube Sentiment Analyzer — Chrome Extension
+# 🎓 YouTube Comments Analyzer — Chrome Extension
 
 A Chrome Extension that analyzes YouTube video comments and provides sentiment analysis (Positive / Negative / Neutral) with key insights — focused on **educational content**.
 
