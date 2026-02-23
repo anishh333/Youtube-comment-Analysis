@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Sentiment Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="#a855f7" stroke-width="2" />
+        <path d="M8 12h8M12 8v8" stroke="#a855f7" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Sentiment Analyzer</h1>
+      <span class="header-sub">YouTube Comments · Education AI</span>
+    </div>
+    <div id="status-dot" class="status-dot offline" title="Backend status"></div>
+  </header>
+
+  <!-- ── Video Info ── -->
+  <div id="video-info" class="video-info hidden">
+    <div class="video-thumb-wrap">
+      <img id="video-thumb" src="" alt="Video thumbnail" class="video-thumb" />
+    </div>
+    <div class="video-meta">
+      <p id="video-title" class="video-title">Loading...</p>
+      <span id="comment-count" class="comment-count-badge">— comments</span>
+    </div>
+  </div>
+
+  <!-- ── States ── -->
+  <div id="state-not-youtube" class="state-panel hidden">
+    <div class="state-icon">📺</div>
+    <p class="state-title">Open a YouTube Video</p>
+    <p class="state-desc">Navigate to a YouTube video page and click this icon to analyze its comments.</p>
+  </div>
+
+  <div id="state-loading" class="state-panel hidden">
+    <div class="spinner"></div>
+    <p class="state-title">Analyzing Comments…</p>
+    <p id="loading-msg" class="state-desc">Fetching and processing comments</p>
+  </div>
+
+  <div id="state-error" class="state-panel hidden">
+    <div class="state-icon">⚠️</div>
+    <p class="state-title">Something went wrong</p>
+    <p id="error-msg" class="state-desc error-text"></p>
+    <button id="btn-retry" class="btn-retry">Try Again</button>
+  </div>
+
+  <!-- ── Results ── -->
+  <div id="state-results" class="hidden">
+
+    <!-- Overall Label -->
+    <div class="overall-label-wrap">
+      <span id="overall-label" class="overall-label">Mostly Positive</span>
+      <span id="avg-score" class="avg-score"></span>
+    </div>
+
+    <!-- Worth Watching Verdict -->
+    <div id="verdict-card" class="verdict-card hidden">
+      <div class="verdict-header">
+        <span class="verdict-question">Worth Watching?</span>
+        <span id="verdict-badge" class="verdict-badge">YES</span>
+      </div>
+      <p id="verdict-reason" class="verdict-reason"></p>
+    </div>
+
+    <!-- Sentiment Bars -->
+    <div class="sentiment-section">
+      <div class="sentiment-row">
+        <div class="sentiment-label-group">
+          <span class="sentiment-dot positive-dot"></span>
+          <span class="senti-name">Positive</span>
+        </div>
+        <div class="bar-track">
+          <div id="bar-positive" class="bar-fill positive-fill" style="width:0%"></div>
+        </div>
+        <div class="sentiment-stats">
+          <span id="pct-positive" class="pct">0%</span>
+          <span id="cnt-positive" class="cnt">0</span>
+        </div>
+      </div>
+      <div class="sentiment-row">
+        <div class="sentiment-label-group">
+          <span class="sentiment-dot neutral-dot"></span>
+          <span class="senti-name">Neutral</span>
+        </div>
+        <div class="bar-track">
+          <div id="bar-neutral" class="bar-fill neutral-fill" style="width:0%"></div>
+        </div>
+        <div class="sentiment-stats">
+          <span id="pct-neutral" class="pct">0%</span>
+          <span id="cnt-neutral" class="cnt">0</span>
+        </div>
+      </div>
+      <div class="sentiment-row">
+        <div class="sentiment-label-group">
+          <span class="sentiment-dot negative-dot"></span>
+          <span class="senti-name">Negative</span>
+        </div>
+        <div class="bar-track">
+          <div id="bar-negative" class="bar-fill negative-fill" style="width:0%"></div>
+        </div>
+        <div class="sentiment-stats">
+          <span id="pct-negative" class="pct">0%</span>
+          <span id="cnt-negative" class="cnt">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Key Insights -->
+    <div class="section">
+      <h2 class="section-title">🔑 Key Insights</h2>
+      <div id="insights-container" class="insights-container"></div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Top Comments -->
+    <div class="section">
+      <h2 class="section-title">💬 Top Comments</h2>
+      <div class="tabs">
+        <button id="tab-positive" class="tab active" data-tab="positive">👍 Positive</button>
+        <button id="tab-negative" class="tab" data-tab="negative">👎 Negative</button>
+      </div>
+      <div id="comments-positive" class="comments-panel active">
+        <div id="list-positive" class="comments-list"></div>
+      </div>
+      <div id="comments-negative" class="comments-panel">
+        <div id="list-negative" class="comments-list"></div>
+      </div>
+    </div>
+
+    <!-- Analyze Again button -->
+    <button id="btn-reanalyze" class="btn-reanalyze">🔄 Re-analyze</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
